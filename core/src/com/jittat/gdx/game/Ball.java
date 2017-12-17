@@ -36,17 +36,8 @@ public class Ball {
 		 if(!isLaunch) {
 			 if(position.y==40) {
 				 Random rn2 = new Random();
-				 /*int j = Math.abs((rn2.nextInt() % 4));
-				 //currentType = type[j];
-				 System.out.println("t: "+touch);
-				 if(touch%15==0&&touch!=0) {
-					 currentType = type[3];
-					 System.out.println("ct: "+currentType);
-				 }*/
 				 int j = Math.abs((rn2.nextInt() % 20)%3);
 				 currentType = type[j];
-				 //System.out.println("ct: "+currentType);
-				 
 			 }
 			 position.y+=1;
 			 if(position.y>=140) {

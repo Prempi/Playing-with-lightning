@@ -8,7 +8,7 @@ public class Sky {
 	public static final int DAYTIME = 1000;
 	public static final int NIGHTTIME = DAYTIME*2;
 	public static final int RESETTIME = DAYTIME*3;
-	private Texture skyNight;
+	public Texture skyNight;
 	private Texture skyDay;
 	private Texture sky;
 	public Sky() {

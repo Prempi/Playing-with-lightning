@@ -92,7 +92,23 @@ public class WorldRenderer {
 	    		batch.draw(heartballImg,pos.x,pos.y);
 	    		break;
 	    	}
-    		batch.draw(ordiballImg,pos3.x,pos3.y);
+	    	if(sky.getBg()==sky.skyNight) {
+	    		switch(ball2.getType()) {
+		    	case 1:
+		    		batch.draw(ordiballImg,pos3.x,pos3.y);
+		    		break;
+		    	case 2:
+		    		batch.draw(bonusballImg,pos3.x,pos3.y);
+		    		break;
+		    	case 3:
+		    		batch.draw(ggballImg,pos3.x,pos3.y);
+		    		break;
+		    	case 4:
+		    		batch.draw(heartballImg,pos3.x,pos3.y);
+		    		break;
+	    		}
+	    		//batch.draw(ordiballImg,pos3.x,pos3.y);
+	    	}
 	    	batch.draw(boltImg,pos2.x,pos2.y);
 	    	font.draw(batch, "Life: " + world.getLife(), 650, 560);
 	    	for(int i = 0;i<a.length;i++) {
