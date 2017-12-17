@@ -45,7 +45,7 @@ public class Ball {
 				 }*/
 				 int j = Math.abs((rn2.nextInt() % 20)%3);
 				 currentType = type[j];
-				 System.out.println("ct: "+currentType);
+				 //System.out.println("ct: "+currentType);
 				 
 			 }
 			 position.y+=1;
@@ -67,15 +67,15 @@ public class Ball {
 			 Random rn = new Random();
 			 int i = Math.abs((rn.nextInt() % 10));
 			 Random rn2 = new Random();
-			 System.out.println("t: "+touch);
-			 if(touch%15==0) {
+			 //System.out.println("t: "+touch);
+			 if(touch%5==0) {
 				 currentType = type[3];
-				 System.out.println("ct: "+currentType);
+				 //System.out.println("ct: "+currentType);
 			 }
 			 else {
 				 int j = Math.abs((rn2.nextInt() % 3));
 				 currentType = type[j];
-				 System.out.println("ct: "+currentType);
+				 //System.out.println("ct: "+currentType);
 			 }
 			 isLaunch = false;
 			 position.y = 41;

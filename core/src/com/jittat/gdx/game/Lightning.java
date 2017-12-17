@@ -65,7 +65,7 @@ public class Lightning {
 			 else {
 				 position.y -= 10;
 			 }
-			 if(position.y <=40) {
+			 if(position.y <=30) {
 				 position.y = 610;
 				 isPress = false;
 			 }
