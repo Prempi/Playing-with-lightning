@@ -1,6 +1,7 @@
 package com.jittat.gdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,12 +13,14 @@ public class WorldRenderer {
 	private Texture bonusballImg;
 	private Texture heartballImg;
 	private Texture ggballImg;
+	private Texture eyeballImg;
 	private Texture mchoneImg;
 	private Texture mchtwoImg;
 	private Texture boltImg;
 	private Texture blockImg;
 	private Texture bgImg;
 	private Texture gameOver;
+	private int time;
 	Ball ball;
 	Ball ball2;
 	Sky sky;
@@ -36,6 +39,7 @@ public class WorldRenderer {
         mchtwoImg = new Texture("mch2.png");
         ordiballImg = new Texture("ordiBall.png");
         bonusballImg = new Texture("bonusBall.png");
+        eyeballImg = new Texture("eyeBall.png");
         heartballImg = new Texture("heartBall.png");
         ggballImg = new Texture("ggBall.png");
         blockImg = new Texture("pipe.png");
@@ -46,6 +50,7 @@ public class WorldRenderer {
         lightning = world.getLightning();
         sky = world.getSky();
         font = new BitmapFont();
+        time = 0;
     }
 	
 	public void render(float delta) {
@@ -58,19 +63,7 @@ public class WorldRenderer {
 	    Vector2 pos = ball.getPosition();
 	    Vector2 pos3 = ball2.getPosition();
 	    Vector2 pos2 = lightning.getPosition();
-	    checkStatus(pos,pos2);
-	    if(Math.abs(pos2.y-pos3.y)<=5&&Math.abs(pos2.x-pos3.x)<=5) {
-	    	world.decreaseLife();
-	    }
-	    if(pos.y<=39) {
-	    	if(ball.getType()==1||ball.getType()==2) {
-	    	world.decreaseLife();
-	    	}
-	    }
-	    if(pos2.y<=40) {
-	    	System.out.println(pos2.y);
-	    	world.decreaseLife();
-	    }
+	    checkStatus(pos,pos2,pos3);
 	    if(world.getLife()>=0) {
 	    	if(lightning.isPress==true) {
 	    		batch.draw(mchtwoImg, 320, 150);
@@ -89,28 +82,43 @@ public class WorldRenderer {
 	    		batch.draw(ggballImg,pos.x,pos.y);
 	    		break;
 	    	case 4:
+	    		batch.draw(eyeballImg,pos.x,pos.y);
+	    		break;
+	    	case 5:
 	    		batch.draw(heartballImg,pos.x,pos.y);
 	    		break;
 	    	}
 	    	if(sky.getBg()==sky.skyNight) {
-	    		switch(ball2.getType()) {
-		    	case 1:
-		    		batch.draw(ordiballImg,pos3.x,pos3.y);
-		    		break;
-		    	case 2:
-		    		batch.draw(bonusballImg,pos3.x,pos3.y);
-		    		break;
-		    	case 3:
-		    		batch.draw(ggballImg,pos3.x,pos3.y);
-		    		break;
-		    	case 4:
-		    		batch.draw(heartballImg,pos3.x,pos3.y);
-		    		break;
+	    		if(!(world.getRight()==1&&Gdx.input.isKeyPressed(Keys.SPACE))) {
+	    			switch(ball2.getType()) {
+	    			case 1:
+	    				batch.draw(ordiballImg,pos3.x,pos3.y);
+	    				break;
+	    			case 2:
+	    				batch.draw(bonusballImg,pos3.x,pos3.y);
+	    				break;
+	    			case 3:
+	    				batch.draw(ggballImg,pos3.x,pos3.y);
+	    				break;
+	    			case 4:
+	    				batch.draw(eyeballImg,pos3.x,pos3.y);
+	    				break;	
+	    			case 5:
+	    				batch.draw(heartballImg,pos3.x,pos3.y);
+	    				break;
+	    			}
 	    		}
-	    		//batch.draw(ordiballImg,pos3.x,pos3.y);
+	    		else {
+	    			time+=1;
+	    			if(time==10) {
+	    				world.decreaseRight();
+	    				time = 0;
+	    			}
+	    		}
 	    	}
 	    	batch.draw(boltImg,pos2.x,pos2.y);
 	    	font.draw(batch, "Life: " + world.getLife(), 650, 560);
+	    	font.draw(batch, "Right: " + world.getRight(),650, 540);
 	    	for(int i = 0;i<a.length;i++) {
 	    		if(a[i]=="#") {
 	    			batch.draw(blockImg,i*40,0);
@@ -123,6 +131,7 @@ public class WorldRenderer {
 	    	font.draw(batch, "Game Over",200, 310);
 	    	font.getData().setScale(1, 1);
 	    	font.draw(batch, "Life: " + 0, 650, 560);
+	    	font.draw(batch, "Right: " + world.getRight(),650, 540);
 	    }
 	    font.getData().setScale(1, 1);
 	    font.draw(batch, "Score: " + world.getScore(), 650, 580);
@@ -137,7 +146,7 @@ public class WorldRenderer {
 		
 	}
 	
-	public void checkStatus(Vector2 a,Vector2 b) {
+	public void checkStatus(Vector2 a,Vector2 b,Vector2 c) {
 		if(Math.abs(a.y-b.y)<=5&&Math.abs(a.x-b.x)<=5) {
 	    	if(ball.getType()==1) {
 	    		world.increaseScore();
@@ -145,7 +154,10 @@ public class WorldRenderer {
 	    	else if(ball.getType()==2){
 	    		world.increaseScore2();
 	    	}
-	    	else if(ball.getType()==4) {
+	    	else if(ball.getType()==4){
+	    		world.increaseRight();
+	    	}
+	    	else if(ball.getType()==5) {
 	    		world.increaseLife();
 	    	}
 	    	else {
@@ -154,6 +166,18 @@ public class WorldRenderer {
 	    	lightning.isPress = false;
 	    	ball.isTouch = true;
 	    	b.y = 610;
+	    }
+		if(Math.abs(b.y-c.y)<=5&&Math.abs(b.x-c.x)<=5) {
+	    	world.decreaseLife();
+	    }
+		if(a.y<=39) {
+	    	if(ball.getType()==1||ball.getType()==2) {
+	    	world.decreaseLife();
+	    	}
+	    }
+	    if(b.y<=40) {
+	    	System.out.println(b.y);
+	    	world.decreaseLife();
 	    }
 	}
 	

@@ -10,6 +10,7 @@ public class World {
 	//private Lightning lightning2;
 	public int score;
 	private int life;
+	private int right;
 	private int[] posx = new int[] {0,80,160,240,320,400,480,560,640,720};
 	private PwlGame pwlgame;
 	private Sky sky;
@@ -73,6 +74,22 @@ public class World {
     public void increaseLife() {
     	if(life<2) {
     		life+=1;
+    	}
+    }
+    
+    public int getRight() {
+    	return right;
+    }
+    
+    public void increaseRight() {
+    	if(right==0) {
+    		right+=1;
+    	}
+    }
+    
+    public void decreaseRight() {
+    	if(right==1) {
+    		right-=1;
     	}
     }
 }
