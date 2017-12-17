@@ -42,4 +42,9 @@ public class Sky {
 		
 	}
 	
+	public void reset() {
+		sky = skyNight;
+		time = 0;
+	}
+	
 }

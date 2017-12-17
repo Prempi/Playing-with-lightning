@@ -17,8 +17,6 @@ public class World {
 	
 	World(PwlGame pwlgame) {
         this.pwlgame = pwlgame;
-        Random rn = new Random();
-		int i = Math.abs((rn.nextInt() % 10));
 		Random rn2 = new Random();
 		int j = Math.abs((rn2.nextInt() % 10));
         ball = new Ball(0,40,this);
@@ -91,5 +89,12 @@ public class World {
     	if(right==1) {
     		right-=1;
     	}
+    }
+    
+    public void reset() {
+        score = 0;
+        life = 1;
+        right = 0;
+        status = "running";
     }
 }

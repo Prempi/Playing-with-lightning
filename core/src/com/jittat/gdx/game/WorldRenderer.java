@@ -1,5 +1,7 @@
 package com.jittat.gdx.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,6 +22,7 @@ public class WorldRenderer {
 	private Texture blockImg;
 	private Texture bgImg;
 	private Texture gameOver;
+	private int[] posx = new int[] {0,80,160,240,320,400,480,560,640,720};
 	private int time;
 	Ball ball;
 	Ball ball2;
@@ -55,15 +58,16 @@ public class WorldRenderer {
 	
 	public void render(float delta) {
 		batch.begin();
-		if(world.status=="running") {
-			bgImg = sky.getBg();
-		}
+		
 		batch.draw(bgImg,0,0);
 	    update();
 	    Vector2 pos = ball.getPosition();
 	    Vector2 pos3 = ball2.getPosition();
 	    Vector2 pos2 = lightning.getPosition();
 	    checkStatus(pos,pos2,pos3);
+	    if(world.status=="running") {
+	    	bgImg = sky.getBg();
+	    }
 	    if(world.getLife()>=0) {
 	    	if(lightning.isPress==true) {
 	    		batch.draw(mchtwoImg, 320, 150);
@@ -110,7 +114,7 @@ public class WorldRenderer {
 	    		}
 	    		else {
 	    			time+=1;
-	    			if(time==10) {
+	    			if(time==30) {
 	    				world.decreaseRight();
 	    				time = 0;
 	    			}
@@ -132,6 +136,18 @@ public class WorldRenderer {
 	    	font.getData().setScale(1, 1);
 	    	font.draw(batch, "Life: " + 0, 650, 560);
 	    	font.draw(batch, "Right: " + world.getRight(),650, 540);
+	    	if(Gdx.input.isKeyPressed(Keys.ENTER)) {
+	    		Random rn2 = new Random();
+	    		int j = Math.abs((rn2.nextInt() % 10));
+	    		pos.x = 0;
+	    		ball.isLaunch = false;
+	    		pos.y = 41;
+	    		ball.touch = 0;
+	    		pos3.x = posx[j];
+	    		pos3.y = 0;
+	    		world.reset();
+	    		sky.reset();
+	    	}
 	    }
 	    font.getData().setScale(1, 1);
 	    font.draw(batch, "Score: " + world.getScore(), 650, 580);
@@ -156,6 +172,7 @@ public class WorldRenderer {
 	    	}
 	    	else if(ball.getType()==4){
 	    		world.increaseRight();
+	    		world.increaseScore();
 	    	}
 	    	else if(ball.getType()==5) {
 	    		world.increaseLife();
@@ -176,7 +193,6 @@ public class WorldRenderer {
 	    	}
 	    }
 	    if(b.y<=40) {
-	    	System.out.println(b.y);
 	    	world.decreaseLife();
 	    }
 	}
