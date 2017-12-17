@@ -60,13 +60,16 @@ public class WorldRenderer {
 		batch.begin();
 		
 		batch.draw(bgImg,0,0);
-	    update();
+		if(world.status=="running") {
+			update();
+		}
 	    Vector2 pos = ball.getPosition();
 	    Vector2 pos3 = ball2.getPosition();
 	    Vector2 pos2 = lightning.getPosition();
 	    checkStatus(pos,pos2,pos3);
 	    if(world.status=="running") {
 	    	bgImg = sky.getBg();
+	    	//update();
 	    }
 	    if(world.getLife()>=0) {
 	    	if(lightning.isPress==true) {
@@ -114,7 +117,7 @@ public class WorldRenderer {
 	    		}
 	    		else {
 	    			time+=1;
-	    			if(time==30) {
+	    			if(time==20) {
 	    				world.decreaseRight();
 	    				time = 0;
 	    			}
@@ -137,9 +140,12 @@ public class WorldRenderer {
 	    	font.draw(batch, "Life: " + 0, 650, 560);
 	    	font.draw(batch, "Right: " + world.getRight(),650, 540);
 	    	if(Gdx.input.isKeyPressed(Keys.ENTER)) {
+	    		time = 0;
+	    		lightning.isPress = false;
+	    		pos2.y = 610;
 	    		Random rn2 = new Random();
 	    		int j = Math.abs((rn2.nextInt() % 10));
-	    		pos.x = 0;
+	    		pos.x = posx[0];
 	    		ball.isLaunch = false;
 	    		pos.y = 41;
 	    		ball.touch = 0;
@@ -192,9 +198,7 @@ public class WorldRenderer {
 	    	world.decreaseLife();
 	    	}
 	    }
-	    if(b.y<=40) {
-	    	world.decreaseLife();
-	    }
+	    
 	}
 	
 }
